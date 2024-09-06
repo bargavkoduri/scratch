@@ -28,6 +28,10 @@ export default function MidArea() {
   }
 
   const handleDelete = (index) => {
+    if (inProgress) {
+      alert("Animation in Progress")
+      return;
+    }
     dispatch(actions.deleteActionItem(index))
   }
 

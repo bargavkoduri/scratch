@@ -63,7 +63,7 @@ export default function PreviewArea() {
               Reset
             </button>
             <button
-            className="text-white rounded bg-blue-500 p-3 mt-4 disabled:bg-white"
+            className="text-white rounded bg-blue-500 p-3 mt-4"
               onClick={startAnimation}
               disabled={btnDisabled}
             >

@@ -10,6 +10,7 @@ export default function Sprite ({id}) {
     let currSpriteIndex = Number(id[id.length - 1])
     let {x,y,angle,index} =  useSelector(state => state.data.sprites)[currSpriteIndex]
     let spriteAnimations = useSelector(state => state.data.actionMap)[id]
+    let inProgress = useSelector(state => state.data.inProgress)
     const dispatch = useDispatch()
 
     let displayHello = greetingHelper(index,spriteAnimations)
@@ -35,7 +36,7 @@ export default function Sprite ({id}) {
                 <div className="relative">
                     <CatSprite id={id}/>
                     {
-                        displayHello ? 
+                        (displayHello && inProgress) ? 
                         <div className="absolute top-0 left-20 bg-blue-400 text-white font-bold rounded-full p-1">
                             Hello
                         </div> : <></>

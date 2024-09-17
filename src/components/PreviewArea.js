@@ -8,8 +8,6 @@ export default function PreviewArea() {
   const sprites = useSelector(state => state.data.sprites)
   const btnDisabled = useSelector(state => state.data.inProgress)
 
-  console.log(btnDisabled)
-
   if(btnDisabled){
     setTimeout(() => {
       dispatch(actions.nextFrame())
@@ -50,27 +48,27 @@ export default function PreviewArea() {
           <h3 className="font-bold">Controls</h3>
           <div className="flex justify-around items-center">
             <button
-              className="text-white rounded bg-green-500 p-3 mt-4"
+              className="text-white rounded bg-green-500 p-3 mt-4 hover:bg-green-700"
               onClick={handleAddSprite}
               disabled={btnDisabled}
             >
               Add Sprite +
             </button>
             <button 
-              className="text-white rounded bg-red-500 p-3 mt-4"
+              className="text-white rounded bg-red-500 p-3 mt-4 hover:bg-red-700"
               onClick={handleReset}
             >
               Reset
             </button>
             <button
-            className="text-white rounded bg-blue-500 p-3 mt-4"
+            className="text-white rounded bg-blue-500 p-3 mt-4 hover:bg-gray-600"
               onClick={startAnimation}
               disabled={btnDisabled}
             >
               Run Animation
             </button>
             <button
-              className="text-white rounded bg-red-500 p-3 mt-4"
+              className="text-white rounded bg-red-500 p-3 mt-4 hover:bg-red-700"
               onClick={stopAnimation}
             >
               Stop Animation

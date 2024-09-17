@@ -21,7 +21,6 @@ const slice = createSlice({
             let actionList = state.actionMap[state.selectedSprite]
             actionList.splice(action.payload, 1)
             state.actionMap[state.selectedSprite] = [...actionList]
-            console.log(state.actionMap[state.selectedSprite])
         },
 
         addSprite(state) {
@@ -53,48 +52,54 @@ const slice = createSlice({
         },
 
         nextFrame(state) {
-            if(isOverlapping(state.sprites.length)){
-               let arr = collisionHelper(state.actionMap,state.sprites)
-               state.actionMap = arr[0]
-               state.sprites = arr[1]
-            }
-            let {actionMap,sprites} = state
-            let count = 0
-            for(let i = 0;i < sprites.length;i++){
-                let {id,index,x,y,angle} = sprites[i]
-                let actionList = actionMap[id]
-                if(index != -1 && index < actionList.length) {
-                    let action = actionList[index]
-                    if(action === 'Move_X_25') 
-                        x += 25
-                    else if(action === 'Move_Y_25') 
-                        y += 25
-                    else if(action === 'Move_X_25_Y_25') {
-                        x += 25
-                        y += 25
+            let updateSpritePosition = (state) => {
+                let { actionMap, sprites } = state
+                let count = 0
+                for (let i = 0; i < sprites.length; i++) {
+                    let { id, index, x, y, angle } = sprites[i]
+                    let actionList = actionMap[id]
+                    if (index != -1 && index < actionList.length) {
+                        let action = actionList[index]
+                        if (action === 'Move_X_25')
+                            x += 25
+                        else if (action === 'Move_Y_25')
+                            y += 25
+                        else if (action === 'Move_X_25_Y_25') {
+                            x += 25
+                            y += 25
+                        }
+                        else if (action === 'Turn_left_45')
+                            angle -= 45
+                        else if (action === 'Turn_right_45')
+                            angle += 45
+                        else if (action === 'Flip')
+                            angle += 180
                     }
-                    else if(action === 'Turn_left_45') 
-                        angle -= 45
-                    else if(action === 'Turn_right_45') 
-                        angle += 45
-                    else if(action === 'Flip') 
-                        angle += 180
+                    index += 1
+                    if (index < actionList.length && actionList[index] === 'Repeat')
+                        index = 0
+                    if (index >= actionList.length)
+                        count += 1
+                    sprites[i] = { id, index, x, y, angle }
                 }
-                index += 1
-                if (index < actionList.length && actionList[index] === 'Repeat')
-                    index = 0
-                if(index >= actionList.length)
-                    count += 1
-                sprites[i] = {id,index,x,y,angle}
+                if (count === sprites.length) {
+                    state.inProgress = false
+                    for (let i = 0; i < sprites.length; i++)
+                        sprites[i].index = -1
+                    state.sprites = [...sprites]
+                }
+                else {
+                    state.sprites = [...sprites]
+                }
             }
-            if(count === sprites.length){
-                state.inProgress = false
-                for(let i = 0;i < sprites.length;i++)
-                    sprites[i].index = -1
-                state.sprites = [...sprites]
-            }
-            else {
-                state.sprites = [...sprites]
+            if(state.inProgress){
+                if(isOverlapping(state.sprites.length)){
+                   updateSpritePosition(state)
+                   let arr = collisionHelper(state.actionMap,state.sprites)
+                   state.actionMap = arr[0]
+                   state.sprites = arr[1]
+                } 
+                updateSpritePosition(state)
             }
             
         },

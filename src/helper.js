@@ -31,8 +31,10 @@ function greetingHelper(index,animations) {
 function isOverlapping(num) {
     if(num === 1)
         return false
-    let boundary = document.getElementById('sprite0').getBoundingClientRect()
-    let boundary1 =document.getElementById('sprite1').getBoundingClientRect()
+    let sprite1 = document.getElementById('sprite0').querySelector('div')
+    let sprite2 = document.getElementById('sprite1').querySelector('div')
+    let boundary = sprite1.getBoundingClientRect()
+    let boundary1 = sprite2.getBoundingClientRect()
 
     return !(boundary.right < boundary1.left || boundary.left > boundary1.right || boundary.bottom < boundary1.top || boundary.top > boundary1.bottom)
 }
